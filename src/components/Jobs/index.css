@@ -1,0 +1,162 @@
+.header {
+  position: sticky;
+  top: 0;
+  width: 100%;
+}
+.jobs-container {
+  background-color: black;
+  min-height: 100vh;
+  width: 100%;
+}
+.jobs-content-container {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 20px 30px;
+  width: 100%;
+}
+@media screen and (max-width: 576px) {
+  .jobs-content-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px 0px;
+  }
+}
+.sidebar {
+  flex-basis: 25%;
+  padding: 10px 5px;
+  min-height: 100vh;
+  color: white;
+  position: sticky;
+  top: 100px;
+}
+@media screen and (max-width: 576px) {
+  .sidebar {
+    padding: 10px 5px;
+    min-height: 20vh;
+    color: white;
+    position: static;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+  }
+}
+.sidebar > div > h1 {
+  font-size: 20px;
+}
+@media screen and (max-width: 576px) {
+  .sidebar > div > h1 {
+    font-size: 16px;
+    text-align: center;
+  }
+}
+@media screen and (max-width: 576px) {
+  .sidebar > hr {
+    display: none;
+  }
+}
+.content {
+  flex-basis: 75%;
+  padding: 10px 20px;
+  min-height: 100vh;
+}
+@media screen and (max-width: 576px) {
+  .content {
+    padding: 10px 20px;
+    min-height: 100vh;
+  }
+}
+.content > h1 {
+  margin-top: 0;
+}
+.profile-tab {
+  border-radius: 10px;
+  background-image: url('https://assets.ccbp.in/frontend/react-js/profile-bg.png');
+  background-size: cover;
+  padding: 10px 20px;
+  height: 250px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+@media screen and (max-width: 576px) {
+  .profile-tab {
+    display: none;
+  }
+}
+.profile-tab > img {
+  width: 60px;
+}
+.profile-tab > h1 {
+  font-size: 20px;
+  margin-bottom: 0;
+  color: #4f46e5;
+}
+.profile-tab > p {
+  font-size: 16px;
+  color: #475569;
+}
+
+hr {
+  margin-top: 30px;
+}
+.jobs-list {
+  width: 100%;
+  padding-left: 0;
+  display: flex;
+  flex-direction: column;
+}
+.employment-type {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.employment-type > label,
+input {
+  display: block;
+}
+.employment-type > input {
+  width: 20px;
+  margin-bottom: 7px;
+}
+.employment-type > label {
+}
+.search-tab {
+  width: 40%;
+  display: flex;
+  align-items: center;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #272727;
+}
+@media screen and (max-width: 576px) {
+  .search-tab {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: sticky;
+    top: 80px;
+  }
+}
+.search-tab > input {
+  display: block;
+  padding: 5px 10px;
+  background-color: black;
+  margin: auto;
+  outline: none;
+  border-style: none;
+}
+.search-icon {
+  color: white;
+  width: 40px;
+  height: 40px;
+  padding: 0 10px;
+  background-color: #272727;
+}
+.loader-container {
+  width: 100%;
+  text-align: center;
+}
