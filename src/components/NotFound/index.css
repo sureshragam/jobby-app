@@ -1,0 +1,16 @@
+.not-found-container {
+  height: 100vh;
+  background-color: #000000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: white;
+  justify-content: center;
+}
+.not-found-container > img {
+  width: 40%;
+  margin-bottom: 0;
+}
+.not-found-container > h1 {
+  margin-top: 10px;
+}

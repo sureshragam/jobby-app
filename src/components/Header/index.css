@@ -18,25 +18,28 @@ li {
   font-size: 20px;
   color: white;
 }
-.header > img {
+.logo {
   width: 150px;
   margin-left: 50px;
 }
 @media screen and (min-width: 390px) and (max-width: 576px) {
-  .header > img {
+  .logo {
     width: 80px;
     margin-left: 0px;
   }
 }
-nav > button {
+nav > ul > li > button {
   margin-right: 50px;
   background-color: #6366f1;
   color: white;
   padding: 10px 20px;
   border-radius: 5px;
+  outline: none;
+  border-style: none;
+  margin-right: 50px;
 }
 @media screen and (min-width: 390px) and (max-width: 576px) {
-  nav > button {
+  nav > ul > li > button {
     background-color: #6366f1;
     color: white;
     padding: 5px 10px;

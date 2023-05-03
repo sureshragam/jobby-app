@@ -46,20 +46,6 @@ const salaryRangesList = [
   },
 ]
 
-// const updatedJobDetails = {
-//         companyLogoUrl: jobDetails.company_logo_url,
-//         companyWebsiteUrl: jobDetails.company_website_url,
-//         employmentType: jobDetails.employment_type,
-//         id: jobDetails.id,
-//         jobDescription: jobDetails.job_description,
-//         skills: jobDetails.skills,
-//         lifeAtCompany: jobDetails.life_at_company,
-//         location: jobDetails.location,
-//         packagePerAnnum: jobDetails.package_per_annum,
-//         rating: jobDetails.rating,
-//         similarJobs: jobDetails.similar_jobs,
-//       }
-
 const apiStatusConstrains = {
   initial: 'INITIAL',
   success: 'SUCCESS',
@@ -69,8 +55,8 @@ const apiStatusConstrains = {
 class Jobs extends Component {
   state = {
     profileDetails: {},
-    jobsList: [],
-    employmentType: [],
+    jobsList: '',
+    employmentType: '',
     search: '',
     salaryRange: '',
     jobsApiStatus: apiStatusConstrains.initial,
@@ -83,13 +69,24 @@ class Jobs extends Component {
   }
 
   onFetchSuccess = data => {
-    this.setState({profileDetails: data})
+    this.setState({
+      profileDetails: data,
+      profileApiStatus: apiStatusConstrains.success,
+    })
+  }
+
+  onFetchFailure = () => {
+    this.setState({
+      profileApiStatus: apiStatusConstrains.failure,
+    })
   }
 
   getJobsList = async () => {
+    this.setState({jobsApiStatus: apiStatusConstrains.initial})
     const {employmentType, search, salaryRange} = this.state
 
-    const url = `https://apis.ccbp.in/jobs?employment_type=${employmentType}&search=${search}&minimum_package=${salaryRange}`
+    const url = `https://apis.ccbp.in/jobs?employment_type=${employmentType}&minimum_package=${salaryRange}&search=${search}`
+    console.log(url)
     const jwtToken = Cookies.get('jwt_token')
     const options = {
       method: 'GET',
@@ -136,7 +133,7 @@ class Jobs extends Component {
       const profileDetails = data.profile_details
       this.onFetchSuccess(profileDetails)
     } else {
-      console.log(await response.json())
+      this.onFetchFailure()
     }
   }
 
@@ -174,26 +171,47 @@ class Jobs extends Component {
     }
   }
 
+  onClickSearch = () => {
+    this.getJobsList()
+  }
+
   renderSuccessContentView = () => {
     const {jobsList, search} = this.state
     return (
       <div className="content">
         <div className="search-tab">
           <input
-            type="text"
+            type="search"
             placeholder="Search"
             value={search}
             onChange={this.onSearchChange}
-            onKeyUp={this.onSearchEnter}
+            // onKeyUp={this.onSearchEnter}
           />
-          <BsSearch className="search-icon" />
+          <button
+            type="button"
+            onClick={this.onClickSearch}
+            data-testid="searchButton"
+          >
+            <BsSearch className="search-icon" />
+          </button>
         </div>
-        <ul className="jobs-list">
-          {jobsList.map(eachJob => {
-            const {id} = eachJob
-            return <JobItem key={id} jobDetails={eachJob} />
-          })}
-        </ul>
+        {jobsList.length < 1 ? (
+          <div className="not-found-container">
+            <img
+              src="https://assets.ccbp.in/frontend/react-js/no-jobs-img.png"
+              alt="no jobs"
+            />
+            <h1>No Jobs Found</h1>
+            <p>We could not find any jobs. Try other filters</p>
+          </div>
+        ) : (
+          <ul className="jobs-list">
+            {jobsList.map(eachJob => {
+              const {id} = eachJob
+              return <JobItem key={id} jobDetails={eachJob} />
+            })}
+          </ul>
+        )}
       </div>
     )
   }
@@ -204,12 +222,21 @@ class Jobs extends Component {
     </div>
   )
 
+  onClickJobsRetry = () => {
+    this.getJobsList()
+  }
+
   renderFailureView = () => (
     <div className="failure-view-container">
       <img
         src="https://assets.ccbp.in/frontend/react-js/failure-img.png"
         alt="failure view"
       />
+      <h1>Oops! Something Went Wrong</h1>
+      <p>We cannot seem to find the page you are looking for</p>
+      <button type="button" onClick={this.onClickJobsRetry}>
+        Retry
+      </button>
     </div>
   )
 
@@ -227,59 +254,100 @@ class Jobs extends Component {
     }
   }
 
+  renderSuccessProfileView = () => {
+    const {profileDetails} = this.state
+    return (
+      <div className="profile-tab">
+        <img src={profileDetails.profile_image_url} alt="profile" />
+        <h1>{profileDetails.name}</h1>
+        <p>{profileDetails.short_bio}</p>
+      </div>
+    )
+  }
+
+  onClickProfileRetry = () => this.getProfileDetails()
+
+  renderProfileFailureView = () => (
+    <div className="profile-failure-view">
+      <button type="button" onClick={this.onClickProfileRetry}>
+        Retry
+      </button>
+    </div>
+  )
+
+  renderProfile = () => {
+    const {profileApiStatus} = this.state
+    switch (profileApiStatus) {
+      case apiStatusConstrains.initial:
+        return this.renderLoaderView()
+      case apiStatusConstrains.success:
+        return this.renderSuccessProfileView()
+      case apiStatusConstrains.failure:
+        return this.renderProfileFailureView()
+
+      default:
+        return null
+    }
+  }
+
   render() {
-    const {profileDetails, jobsApiStatus} = this.state
+    const {jobsApiStatus} = this.state
 
     return (
       <div className="jobs-container">
         <Header className="header" />
         <div className="jobs-content-container">
           <div className="sidebar">
-            <div className="profile-tab">
-              <img src={profileDetails.profile_image_url} alt="profile" />
-              <h1>{profileDetails.name}</h1>
-              <p>{profileDetails.short_bio}</p>
-            </div>
+            {this.renderProfile()}
+
             <hr />
-            <div>
+            <div className="employment-container">
               <h1>Type of Employment</h1>
-              {employmentTypesList.map(eachType => {
-                const {employmentTypeId} = eachType
-                return (
-                  <div className="employment-type" key={employmentTypeId}>
-                    <input
-                      type="checkbox"
-                      id={eachType.employmentTypeId}
-                      value={eachType.employmentTypeId}
-                      onChange={this.onChangeCheckBox}
-                    />
-                    <label htmlFor={eachType.employmentTypeId}>
-                      {eachType.label}
-                    </label>
-                  </div>
-                )
-              })}
+              <ul className="employment-list">
+                {employmentTypesList.map(eachType => {
+                  const {employmentTypeId} = eachType
+                  return (
+                    <li key={employmentTypeId}>
+                      <div className="employment-type" key={employmentTypeId}>
+                        <input
+                          type="checkbox"
+                          id={eachType.employmentTypeId}
+                          value={eachType.employmentTypeId}
+                          onChange={this.onChangeCheckBox}
+                        />
+                        <label htmlFor={eachType.employmentTypeId}>
+                          {eachType.label}
+                        </label>
+                      </div>
+                    </li>
+                  )
+                })}
+              </ul>
             </div>
             <hr />
-            <div>
+            <div className="salary-range-container">
               <h1>Salary Range</h1>
-              {salaryRangesList.map(eachType => {
-                const {salaryRangeId} = eachType
-                return (
-                  <div className="employment-type" key={salaryRangeId}>
-                    <input
-                      type="radio"
-                      id={eachType.salaryRangeId}
-                      name="salary-range"
-                      onChange={this.onChangeRadioBox}
-                      value={salaryRangeId}
-                    />
-                    <label htmlFor={eachType.salaryRangeId}>
-                      {eachType.label}
-                    </label>
-                  </div>
-                )
-              })}
+              <ul className="salary-range-list">
+                {salaryRangesList.map(eachType => {
+                  const {salaryRangeId} = eachType
+                  return (
+                    <li key={salaryRangeId}>
+                      <div className="employment-type" key={salaryRangeId}>
+                        <input
+                          type="radio"
+                          id={eachType.salaryRangeId}
+                          name="salary-range"
+                          onChange={this.onChangeRadioBox}
+                          value={salaryRangeId}
+                        />
+                        <label htmlFor={eachType.salaryRangeId}>
+                          {eachType.label}
+                        </label>
+                      </div>
+                    </li>
+                  )
+                })}
+              </ul>
             </div>
           </div>
           {this.renderContent(jobsApiStatus)}

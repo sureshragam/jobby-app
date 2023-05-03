@@ -45,7 +45,7 @@
     margin-top: 30px;
   }
 }
-.home-content-container > button {
+.home-content-container > .link > button {
   padding: 10px 20px;
   color: white;
   background-color: #6366f1;
@@ -54,7 +54,7 @@
   width: 150px;
 }
 @media screen and (max-width: 576px) {
-  .home-content-container > button {
+  .home-content-container > .link > button {
     padding: 10px 20px;
     color: white;
     background-color: #6366f1;

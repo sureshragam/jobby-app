@@ -26,7 +26,6 @@
 .sidebar {
   flex-basis: 25%;
   padding: 10px 5px;
-  min-height: 100vh;
   color: white;
   position: sticky;
   top: 100px;
@@ -75,7 +74,7 @@
   background-image: url('https://assets.ccbp.in/frontend/react-js/profile-bg.png');
   background-size: cover;
   padding: 10px 20px;
-  height: 250px;
+  height: 200px;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -156,7 +155,53 @@ input {
   padding: 0 10px;
   background-color: #272727;
 }
+
+.search-tab > button {
+  background-color: #272727;
+  border-style: none;
+  padding: 0;
+}
 .loader-container {
   width: 100%;
   text-align: center;
+}
+.employment-list {
+  padding-left: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 0px;
+  margin-bottom: 0;
+}
+.employment-list > li {
+  display: block;
+  list-style-type: none;
+  width: 100%;
+  margin-bottom: 0px;
+}
+.salary-range-list {
+  padding-left: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 0px;
+  margin-bottom: 0;
+}
+.salary-range-list > li {
+  display: block;
+  list-style-type: none;
+  width: 100%;
+  margin-bottom: 0px;
+}
+.profile-failure-view {
+  width: 100%;
+  text-align: center;
+}
+.profile-failure-view > button {
+  padding: 10px 20px;
+  color: white;
+  background-color: #6366f1;
+  margin-top: 30px;
+  border-radius: 8px;
+  width: 150px;
 }

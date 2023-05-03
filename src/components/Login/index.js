@@ -46,7 +46,7 @@ class Login extends Component {
           <div className="login-card-logo-container">
             <img
               src="https://assets.ccbp.in/frontend/react-js/logo-img.png"
-              alt="logo"
+              alt="website logo"
             />
           </div>
           <form onSubmit={this.onFormSubmit}>
